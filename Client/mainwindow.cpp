@@ -117,7 +117,7 @@ MServer MainWindow::readServer(const mObject &obj) {
     return server;
 }
 
-const MainWindow::mValue& find_value( const mObject& obj, const string& name  )
+const mValue& MainWindow::find_value( const mObject& obj, const string& name  )
 {
     mObject::const_iterator i = obj.find( name );
 
