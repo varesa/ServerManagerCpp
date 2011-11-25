@@ -39,10 +39,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     table->setModel(model);
 }
 
-void MainWindow::init_network() {
-
-}
-
 void MainWindow::requestServers() {
 
     socket->abort();
@@ -83,11 +79,11 @@ vector< MServer > MainWindow::translateServers( QString json_string )
 {
     //ifstream is( file_name );
 
-    Value value;
+    mValue value;
 
     json_spirit::read( json_string.toStdString(), value );
 
-    const Array& server_array = value.get_array();
+    const mArray& server_array = value.get_array();
 
     vector< MServer > servers;
 
@@ -107,16 +103,16 @@ vector< MServer > MainWindow::translateServers( QString json_string )
 //bool running;
 //bool locked;
 
-MServer MainWindow::readServer(const Object &obj) {
+MServer MainWindow::readServer(const mObject &obj) {
     MServer server;
 
-    server.id      = find_value( obj, "id"      ).get_int();
-    server.name    = find_value( obj, "name"    ).get_str();
-    server.desc    = find_value( obj, "desc"    ).get_str();
-    server.path    = find_value( obj, "path"    ).get_str();
-    server.port    = find_value( obj, "port"    ).get_int();
-    server.running = find_value( obj, "running" ).get_bool();
-    server.locked  = find_value( obj, "locked"  ).get_bool();
+//    server.id      = find_value( obj, "id"      ).get_int();
+//    server.name    = find_value( obj, "name"    ).get_str();
+//    server.desc    = find_value( obj, "desc"    ).get_str();
+//    server.path    = find_value( obj, "path"    ).get_str();
+//    server.port    = find_value( obj, "port"    ).get_int();
+//    server.running = find_value( obj, "running" ).get_bool();
+//    server.locked  = find_value( obj, "locked"  ).get_bool();
 
     return server;
 }
@@ -130,8 +126,6 @@ const MainWindow::mValue& find_value( const mObject& obj, const string& name  )
 
     return i->second;
 }
-
-
 
 
 

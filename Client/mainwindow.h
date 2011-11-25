@@ -42,7 +42,7 @@ private:
     void updateScreen(QString jsonString);
 
     vector< MServer > translateServers(QString jsonString);
-    MServer readServer(const Object& obj);
+    MServer readServer(const mObject& obj);
     const mValue& find_value( const mObject& obj, const string& name  );
 
 };
