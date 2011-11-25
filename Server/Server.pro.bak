@@ -1,0 +1,9 @@
+HEADERS       = json_spirit.h \
+		json_spirit_writer.h \
+		json* \
+		boost/variant/*.hpp
+		server.h \
+		mserver.hpp
+SOURCES       = server.cpp \
+                main.cpp
+QT           += network

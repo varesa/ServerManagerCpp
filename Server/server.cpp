@@ -168,5 +168,5 @@ void Server::sendFortune()
 
     clientConnection->write(block);
     clientConnection->disconnectFromHost();
-    statusLabel->setText(*qstr);
+    //statusLabel->setText(*qstr);
 }

@@ -1,0 +1,9 @@
+HEADERS       = client.h
+SOURCES       = client.cpp \
+                main.cpp
+QT           += network
+
+INCLUDEPATH += C:\C++Libs\boost_1_47_0 \
+            C:\Users\Oppilas\Documents\QtProjects\json_spirit_lib
+
+LIBS += -LC:\Users\Oppilas\Documents\QtProjects\json_spirit_lib-build-desktop-Qt_4_7_4_for_Desktop_-_MinGW_4_4__Qt_SDK__Debug\debug -ljson_spirit_lib

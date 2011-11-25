@@ -6,8 +6,13 @@
 
 #include <QList>
 #include <QtNetwork>
+
+#include <vector>
+#include <string>
+
 #include <json_spirit.h>
 
+#include "../Server/mserver.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -18,14 +23,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     lista = new QList<QStandardItem*>();
 
+    socket = new QTcpSocket();
 
-    socket = new QTcpSocket(this);
-
-
-    connect(fetchButton, SIGNAL(clicked()), this, SLOT(requestServers()));
-
+    connect(ui->fetchButton, SIGNAL(clicked()), this, SLOT(requestServers()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(readServers()));
-
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(displayError(QAbstractSocket::SocketError)));
 
     lista->append(new QStandardItem("Yksi"));
@@ -38,11 +39,99 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     table->setModel(model);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+void MainWindow::init_network() {
+
 }
 
-void MainWindow:: init_network() {
-    socket = new QTcpSocket();
+void MainWindow::requestServers() {
+
+    socket->abort();
+    socket->connectToHost(ui->hostEdit->text(), ui->portEdit->text().toInt());
+    blocksize = 0;
+
 }
+
+void MainWindow::readServers() {
+
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_4_0);
+
+    if (blocksize == 0) {
+        if (socket->bytesAvailable() < (int)sizeof(quint16))
+            return;
+
+        in >> blocksize;
+    }
+
+    if (socket->bytesAvailable() < blocksize)
+        return;
+
+
+    QString json_string;
+    in >> json_string;
+    updateScreen(json_string);
+
+}
+
+void MainWindow::updateScreen(QString jsonString) {
+
+
+
+}
+
+vector< MServer > MainWindow::translateServers( QString json_string )
+{
+    //ifstream is( file_name );
+
+    Value value;
+
+    json_spirit::read( json_string.toStdString(), value );
+
+    const Array& server_array = value.get_array();
+
+    vector< MServer > servers;
+
+    for( unsigned int i = 0; i < server_array.size(); ++i )
+    {
+        servers.push_back( readServer( server_array[i].get_obj() ) );
+    }
+
+    return servers;
+}
+
+//int id;
+//std::string name;
+//std::string desc;
+//std::string path;
+//int port;
+//bool running;
+//bool locked;
+
+MServer MainWindow::readServer(const Object &obj) {
+    MServer server;
+
+    server.id      = find_value( obj, "id"      ).get_int();
+    server.name    = find_value( obj, "name"    ).get_str();
+    server.desc    = find_value( obj, "desc"    ).get_str();
+    server.path    = find_value( obj, "path"    ).get_str();
+    server.port    = find_value( obj, "port"    ).get_int();
+    server.running = find_value( obj, "running" ).get_bool();
+    server.locked  = find_value( obj, "locked"  ).get_bool();
+
+    return server;
+}
+
+const MainWindow::mValue& find_value( const mObject& obj, const string& name  )
+{
+    mObject::const_iterator i = obj.find( name );
+
+    assert( i != obj.end() );
+    assert( i->first == name );
+
+    return i->second;
+}
+
+
+
+
+

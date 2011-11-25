@@ -1,7 +1,7 @@
 #ifndef MSERVER_HPP
 #define MSERVER_HPP
 
-#endif // MSERVER_HPP
+
 
 #include <string>
 
@@ -17,3 +17,4 @@ public:
 private:
 
 };
+#endif // MSERVER_HPP
