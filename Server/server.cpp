@@ -172,7 +172,7 @@ void Server::sendFortune()
     out.device()->seek(0);
     out << (quint16)(block.size() - sizeof(quint16));
 
-    statusLabel->setText("Ready to send");
+    statusLabel->setText("Sent! : " + *qstr);
 
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
     connect(clientConnection, SIGNAL(disconnected()),
