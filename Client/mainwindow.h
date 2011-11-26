@@ -29,6 +29,8 @@ private slots:
     void readServers();
 
 private:
+    vector< MServer > *servers;
+
     Ui::MainWindow *ui;
     QTcpSocket *socket;
     QStandardItemModel *model;

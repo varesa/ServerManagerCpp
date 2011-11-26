@@ -91,7 +91,7 @@ vector< MServer > MainWindow::translateServers( QString json_string )
 
     const mArray& server_array = value.get_array();
 
-    vector< MServer > servers;
+
 
     for( unsigned int i = 0; i < server_array.size(); ++i )
     {
