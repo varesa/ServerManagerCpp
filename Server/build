@@ -1,0 +1,4 @@
+cd /home/esa/qtprojects/serverManager/Server
+make clean
+/usr/local/Trolltech/Qt-4.7.4/bin/qmake -Wall Server.pro
+make
