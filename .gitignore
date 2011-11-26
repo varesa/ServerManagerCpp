@@ -1,6 +1,8 @@
 **/*.pro.user
 **/moc_*
 **/*.o
+*~
 **/*~
 Client/Client
 Server/Server
+fortuneclient/Client
