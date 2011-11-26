@@ -3,9 +3,11 @@
 
 #include <QStandardItem>
 #include <QStandardItemModel>
-
 #include <QList>
+
 #include <QtNetwork>
+
+#include <QMessageBox>
 
 #include <vector>
 #include <string>
@@ -33,12 +35,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(socket, SIGNAL(readyRead()), this, SLOT(readServers()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(displayError(QAbstractSocket::SocketError)));
 
-    lista->append(new QStandardItem("Yksi"));
-    lista->append(new QStandardItem("kaksi"));
+//    lista->append(new QStandardItem("Yksi"));
+//    lista->append(new QStandardItem("kaksi"));
 
-    model->appendRow(*lista);
-    model->appendRow(new QStandardItem("kaksi"));
-    model->appendRow(*lista);
+//    model->appendRow(*lista);
+//    model->appendRow(new QStandardItem("kaksi"));
+//    model->appendRow(*lista);
 
     table->setModel(model);
 }
@@ -80,18 +82,18 @@ void MainWindow::updateScreen(QString jsonString) {
 
     }
 
-    Merver server = servers->at(0);
+    MServer server = servers->at(0);
 
     model->appendRow(new QStandardItem("yksi"));
-    model->appendRow(new QStandardItem(server.name));
-//    model->appendRow(*lista);
+    QString qs = server.name.c_str();
+    model->appendRow(new QStandardItem(qs));//    model->appendRow(*lista);
 
     table->setModel(model);
     model->appendRow(new QStandardItem("kolme"));
 
 }
 
-vector< MServer > MainWindow::translateServers( QString json_string )
+void MainWindow::translateServers( QString json_string )
 {
     //ifstream is( file_name );
 
@@ -105,10 +107,10 @@ vector< MServer > MainWindow::translateServers( QString json_string )
 
     for( unsigned int i = 0; i < server_array.size(); ++i )
     {
-        servers.push_back( readServer( server_array[i].get_obj() ) );
+        servers->push_back( readServer( server_array[i].get_obj() ) );
     }
 
-    return servers;
+    //return servers;
 }
 
 //int id;
@@ -141,6 +143,28 @@ const mValue& MainWindow::find_value( const mObject& obj, const string& name  )
     assert( i->first == name );
 
     return i->second;
+}
+
+void MainWindow::displayError(QAbstractSocket::SocketError socketError)
+{
+    switch (socketError) {
+        case QAbstractSocket::RemoteHostClosedError:
+            break;
+        case QAbstractSocket::HostNotFoundError:
+            ui->statusBox->setText(tr("The host was not found. Please check the "
+                                        "host name and port settings."));
+            break;
+        case QAbstractSocket::ConnectionRefusedError:
+            ui->statusBox->setText(tr("The connection was refused by the peer. "
+                                        "Make sure the fortune server is running, "
+                                        "and check that the host name and port "
+                                        "settings are correct."));
+            break;
+        default:
+            ui->statusBox->setText(tr("The following error occurred: %1.")
+                                     .arg(socket->errorString()));
+    }
+
 }
 
 

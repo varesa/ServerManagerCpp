@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStandardItemModel>
+#include <QTableView>
 #include <QtNetwork>
 //#include <QList>
 
@@ -27,21 +28,25 @@ public:
 private slots:
     void requestServers();
     void readServers();
+    void displayError(QAbstractSocket::SocketError socketError);
 
 private:
-    vector< MServer > *servers;
+    std::vector< MServer > *servers;
 
     Ui::MainWindow *ui;
     QTcpSocket *socket;
+
+    //Table:
     QStandardItemModel *model;
     QList<QStandardItem*> *lista;
+    QTableView *table;
 
     qint16 blocksize;
 
 //    void init_network();
     void updateScreen(QString jsonString);
 
-    std::vector< MServer > translateServers(QString jsonString);
+    void translateServers(QString jsonString);
     MServer readServer(const json_spirit::mObject& obj);
     const json_spirit::mValue& find_value( const json_spirit::mObject& obj, const std::string& name  );
 
