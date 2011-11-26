@@ -10,7 +10,8 @@ TEMPLATE = app
 
 
 
-SOURCES += main.cpp mainwindow.cpp
+SOURCES += main.cpp mainwindow.cpp \
+    json_spirit_reader.cpp
 
 #HEADERS  += json_spirit_error_position.h json_spirit_reader_template.h \
 #            json_spirit_value.h json_spirit_writer_template.h \
@@ -25,5 +26,6 @@ HEADERS +=  json_spirit.h \ #json_spirit_stream_reader.h json_spirit_writer.h \
 #	    *.hpp
 
 FORMS    += mainwindow.ui
+
 
 

@@ -11,8 +11,6 @@
 #include <json_spirit.h>
 #include "../Server/mserver.hpp"
 
-using namespace std;
-using namespace json_spirit;
 
 namespace Ui {
     class MainWindow;
@@ -41,9 +39,9 @@ private:
 //    void init_network();
     void updateScreen(QString jsonString);
 
-    vector< MServer > translateServers(QString jsonString);
-    MServer readServer(const mObject& obj);
-    const mValue& find_value( const mObject& obj, const string& name  );
+    std::vector< MServer > translateServers(QString jsonString);
+    MServer readServer(const json_spirit::mObject& obj);
+    const json_spirit::mValue& find_value( const json_spirit::mObject& obj, const std::string& name  );
 
 };
 

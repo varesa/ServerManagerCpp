@@ -10,9 +10,15 @@
 #include <vector>
 #include <string>
 
+#define JSON_SPIRIT_MVALUE_ENABLED
+
 #include <json_spirit.h>
 
 #include "../Server/mserver.hpp"
+
+using namespace std;
+using namespace json_spirit;
+using json_spirit::read;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -71,7 +77,7 @@ void MainWindow::readServers() {
 
 void MainWindow::updateScreen(QString jsonString) {
 
-
+    translateServers(jsonString);
 
 }
 
@@ -80,8 +86,8 @@ vector< MServer > MainWindow::translateServers( QString json_string )
     //ifstream is( file_name );
 
     mValue value;
-
-    json_spirit::read( json_string.toStdString(), value );
+    const string str = json_string.toStdString();
+    json_spirit::read(str, value);
 
     const mArray& server_array = value.get_array();
 

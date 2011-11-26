@@ -51,14 +51,14 @@
 #define JSON_SPIRIT_MVALUE_ENABLED
 
 #include <json_spirit.h>
-//#include "json_spirit_writer.h"
 
-#define DBHOST "tcp://127.0.0.1:3306"
-#define USER "servermanager"
-#define PASSWORD "servermanager"
-#define DATABASE "servers"
+//#define DBHOST "tcp://127.0.0.1:3306"
+//#define USER "servermanager"
+//#define PASSWORD "servermanager"
+//#define DATABASE "servers"
 
 #include "server.h"
+#include "mserver.hpp"
 
 
 #ifndef JSON_SPIRIT_MVALUE_ENABLED
@@ -123,25 +123,37 @@ void Server::sendFortune()
 
     statusLabel->setText("Connected");
 
-    thing field;
-    field.name="abc";
-    field.number=321;
-    thing field2;
-    field2.name="aasdbc";
-    field2.number=32541;
+//    thing field;
+//    field.name="abc";
+//    field.number=321;
+//    thing field2;
+//    field2.name="aasdbc";
+//    field2.number=32541;
+
+    MServer server;
+    server.id=1;
+    server.name="abc";
+    server.port=123;
+    server.desc="No desc";
+    server.path="/";
+    server.running=false;
+    server.locked=false;
+
 
     Array arr;
 
-    Object fld;
-    fld.push_back( Pair( "nme",field.name ) );
-    fld.push_back( Pair( "nmuber",field.number ) );
+    Object obj1;
+    obj1.push_back( Pair( "name",server.name ) );
+    obj1.push_back( Pair( "port",server.port ) );
 
-    Object fld2;
-    fld2.push_back( Pair( "nme",field2.name ) );
-    fld2.push_back( Pair( "nmuber",field2.number ) );
 
-    arr.push_back(fld);
-    arr.push_back(fld2);
+    arr.push_back(obj1);
+//    Object fld2;
+//    fld2.push_back( Pair( "nme",field2.name ) );
+//    fld2.push_back( Pair( "nmuber",field2.number ) );
+
+//    arr.push_back(fld);
+//    arr.push_back(fld2);
 
     string str;
     str = write_formatted(arr);
