@@ -23,10 +23,8 @@ using json_spirit::read;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    QTableView *table = ui->tableView;
-
-    QStandardItemModel *model = new QStandardItemModel();
-
+    table = ui->tableView;
+    model = new QStandardItemModel();
     lista = new QList<QStandardItem*>();
 
     socket = new QTcpSocket();
@@ -78,6 +76,18 @@ void MainWindow::readServers() {
 void MainWindow::updateScreen(QString jsonString) {
 
     translateServers(jsonString);
+    if(servers->size() > 0) {
+
+    }
+
+    Merver server = servers->at(0);
+
+    model->appendRow(new QStandardItem("yksi"));
+    model->appendRow(new QStandardItem(server.name));
+//    model->appendRow(*lista);
+
+    table->setModel(model);
+    model->appendRow(new QStandardItem("kolme"));
 
 }
 
