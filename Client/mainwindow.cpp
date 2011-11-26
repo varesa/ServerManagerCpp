@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     model = new QStandardItemModel();
     lista = new QList<QStandardItem*>();
 
+    servers = new vector<MServer>();
+
     socket = new QTcpSocket();
 
     connect(ui->fetchButton, SIGNAL(clicked()), this, SLOT(requestServers()));
@@ -71,22 +73,20 @@ void MainWindow::readServers() {
 
     QString json_string;
     in >> json_string;
+    ui->statusBox->setText(json_string);
     updateScreen(json_string);
 
 }
 
 void MainWindow::updateScreen(QString jsonString) {
 
+    model->appendRow(new QStandardItem("yksi"));
     translateServers(jsonString);
     if(servers->size() > 0) {
-
+        MServer server = servers->at(0);
+        QString qs = server.name.c_str();
+        model->appendRow(new QStandardItem(qs));//    model->appendRow(*lista);
     }
-
-    MServer server = servers->at(0);
-
-    model->appendRow(new QStandardItem("yksi"));
-    QString qs = server.name.c_str();
-    model->appendRow(new QStandardItem(qs));//    model->appendRow(*lista);
 
     table->setModel(model);
     model->appendRow(new QStandardItem("kolme"));
@@ -95,7 +95,7 @@ void MainWindow::updateScreen(QString jsonString) {
 
 void MainWindow::translateServers( QString json_string )
 {
-    //ifstream is( file_name );
+
 
     mValue value;
     const string str = json_string.toStdString();
